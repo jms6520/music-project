@@ -23,8 +23,35 @@ def send_midi_clock(outport, tempo):
     outport.send(mido.Message('clock'))  # Send a single clock tick message
     return microseconds_per_tick
 
+
+
+def list_available_cameras():
+    # Get the number of available cameras
+    num_cameras = 0
+    for i in range(10):
+        cap = cv2.VideoCapture(i)
+        if cap.isOpened():
+            num_cameras += 1
+            cap.release()
+        else:
+            break
+
+    # List the available cameras
+    print(f"Found {num_cameras} available cameras:")
+    for i in range(num_cameras):
+        cap = cv2.VideoCapture(i)
+        print(f"Camera {i}: {cap.getBackendName()}")
+        cap.release()
+
+
+# List available cameras
+list_available_cameras()
 # Initialize webcam
-cap = cv2.VideoCapture(0)
+try:
+    cap = cv2.VideoCapture(0)  # Select the second available camera
+except e:
+    print("No camera found. Please connect one and try again.")
+    exit()
 
 # Set default tempo
 tempo = 120  # Default tempo in BPM
