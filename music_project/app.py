@@ -44,11 +44,18 @@ def list_available_cameras():
         cap.release()
 
 
-# List available cameras
-list_available_cameras()
+def select_camera():
+    # Ask the user to select a camera
+    camera_id = int(input(f"Select a camera: "))
+    return camera_id
+
+
+
 # Initialize webcam
 try:
-    cap = cv2.VideoCapture(0)  # Select the second available camera
+    list_available_cameras()
+    camera_id = select_camera()
+    cap = cv2.VideoCapture(camera_id)  # Select the second available camera
 except e:
     print("No camera found. Please connect one and try again.")
     exit()
